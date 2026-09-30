@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F4F7"
+    android:padding="20dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="26dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="#F7F9FC"
+                    android:gravity="center"
+                    android:text="SP"
+                    android:textColor="#0D1B35"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:text="SIPKA"
+                    android:textColor="#0D1B35"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Masuk ke akun anggota"
+                android:textColor="#0D1B35"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Gunakan email satuan Anda untuk melanjutkan."
+                android:textColor="#667085"
+                android:textSize="12sp" />
+
+            <TextView style="@style/SipkaFieldLabel" android:text="Email" />
+            <EditText
+                android:id="@+id/input_email"
+                style="@style/SipkaEditText"
+                android:hint="nama@satuan.go.id"
+                android:inputType="textEmailAddress" />
+
+            <TextView style="@style/SipkaFieldLabel" android:text="Kata sandi" />
+            <EditText
+                android:id="@+id/input_password"
+                style="@style/SipkaEditText"
+                android:hint="Masukkan kata sandi"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/login_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#B42318"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_login"
+                style="@style/SipkaPrimaryButton"
+                android:layout_marginTop="20dp"
+                android:text="Masuk" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" android:background="#D7DCE3" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="10dp" android:text="ATAU" android:textColor="#667085" android:textSize="10sp" />
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" android:background="#D7DCE3" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_google"
+                style="@style/SipkaSecondaryButton"
+                android:layout_marginTop="15dp"
+                android:text="Lanjutkan dengan Google" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Belum punya akun?" android:textColor="#667085" android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/link_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Daftar"
+                    android:textColor="#2F69B3"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

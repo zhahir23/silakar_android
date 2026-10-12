@@ -6,6 +6,8 @@
 
     <application
         android:allowBackup="false"
+        android:icon="@mipmap/ic_logo_humas"
+        android:roundIcon="@mipmap/ic_logo_humas_round"
         android:label="SIPKA"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
         android:usesCleartextTraffic="true">

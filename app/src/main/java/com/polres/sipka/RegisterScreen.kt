@@ -1,6 +1,7 @@
 package com.polres.sipka
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -46,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) -> Unit) {
     var fullName by remember { mutableStateOf("") }
-    var nip by remember { mutableStateOf("") }
+    var nrp by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -58,7 +60,11 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        runCatching { SipkaApi.service.registrationOptions() }.onSuccess { loaded ->
+        runCatching {
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                SipkaApi.service.registrationOptions()
+            }
+        }.onSuccess { loaded ->
             options = loaded
             if (selectedRole.isBlank()) selectedRole = loaded.roles.firstOrNull().orEmpty()
         }
@@ -74,12 +80,24 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
                 shadowElevation = 2.dp
             ) {
                 Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Surface(Modifier.size(38.dp), shape = RoundedCornerShape(2.dp), border = BorderStroke(1.dp, Border), color = Color.White) {
-                            Box(contentAlignment = Alignment.Center) { Text("SP", color = Navy, fontSize = 13.sp, fontWeight = FontWeight.Bold) }
-                        }
-                        Spacer(Modifier.width(9.dp))
-                        Text("SIPKA", color = Navy, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo_humas),
+                            contentDescription = "Logo Humas",
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo_polri),
+                            contentDescription = "Logo Polri",
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(Modifier.width(10.dp))
+                        Text("SIPKA", color = Navy, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.height(16.dp))
                     Text("Daftar akun baru", color = Navy, fontSize = 19.sp, fontWeight = FontWeight.Bold)
@@ -96,15 +114,17 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
                         shape = RoundedCornerShape(3.dp)
                     )
                     Spacer(Modifier.height(10.dp))
-                    FieldLabel("NIP (Nomor Induk Pegawai)")
+                    FieldLabel("NRP (Nomor Registrasi Pokok)")
                     Spacer(Modifier.height(4.dp))
                     OutlinedTextField(
-                        value = nip, onValueChange = { nip = it; message = null },
-                        modifier = Modifier.fillMaxWidth(), singleLine = true,
-                        placeholder = { Text("Contoh: 198501012010011001", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        value = nrp,
+                        onValueChange = { nrp = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        placeholder = { Text("Masukkan NRP anda", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
                         shape = RoundedCornerShape(3.dp)
                     )
+
                     Spacer(Modifier.height(10.dp))
                     FieldLabel("Email")
                     Spacer(Modifier.height(4.dp))
@@ -112,28 +132,37 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
                         value = email, onValueChange = { email = it; message = null },
                         modifier = Modifier.fillMaxWidth(), singleLine = true,
                         placeholder = { Text("nama@satuan.go.id", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), shape = RoundedCornerShape(3.dp)
+                        shape = RoundedCornerShape(3.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                     )
+
                     Spacer(Modifier.height(10.dp))
                     FieldLabel("Role / Jabatan")
                     Spacer(Modifier.height(4.dp))
-                    DropdownField(selectedRole.ifBlank { "Pilih role / jabatan" }, options.roles) { selectedRole = it }
+                    DropdownField(selectedRole.ifBlank { "Pilih Role" }, options.roles) { selectedRole = it }
+
                     Spacer(Modifier.height(10.dp))
                     FieldLabel("Pilih Atasan")
                     Spacer(Modifier.height(4.dp))
-                    DropdownField(selectedSupervisor?.namaLengkap ?: "Pilih atasan (opsional)", options.supervisors.map { it.namaLengkap ?: "Anggota #${it.id}" }) { name ->
-                        selectedSupervisor = options.supervisors.firstOrNull { it.namaLengkap == name }
+                    DropdownField(
+                        selectedSupervisor?.label ?: "Pilih Atasan (Opsional)",
+                        listOf("Tanpa Atasan") + options.supervisors.map { it.label }
+                    ) { selected ->
+                        selectedSupervisor = options.supervisors.firstOrNull { it.label == selected }
                     }
+
                     Spacer(Modifier.height(10.dp))
                     FieldLabel("Kata sandi")
                     Spacer(Modifier.height(4.dp))
                     OutlinedTextField(
                         value = password, onValueChange = { password = it; message = null },
                         modifier = Modifier.fillMaxWidth(), singleLine = true,
-                        placeholder = { Text("Masukkan kata sandi", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
+                        placeholder = { Text("Minimal 8 karakter", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
+                        shape = RoundedCornerShape(3.dp),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), shape = RoundedCornerShape(3.dp)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
+
                     Spacer(Modifier.height(10.dp))
                     FieldLabel("Konfirmasi Kata sandi")
                     Spacer(Modifier.height(4.dp))
@@ -141,15 +170,17 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
                         value = confirmPassword, onValueChange = { confirmPassword = it; message = null },
                         modifier = Modifier.fillMaxWidth(), singleLine = true,
                         placeholder = { Text("Ulangi kata sandi", fontSize = 14.sp, color = Color(0xFF9AA0A6)) },
+                        shape = RoundedCornerShape(3.dp),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), shape = RoundedCornerShape(3.dp)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
 
-                    Spacer(Modifier.height(18.dp))
+                    Spacer(Modifier.height(16.dp))
                     Button(
                         onClick = {
+                            val effectiveRole = selectedRole.ifBlank { options.roles.firstOrNull() ?: "anggota" }
                             when {
-                                fullName.isBlank() || email.isBlank() || selectedRole.isBlank() || password.isBlank() -> message = "Lengkapi semua data yang wajib diisi."
+                                fullName.isBlank() || email.isBlank() || password.isBlank() -> message = "Lengkapi semua data yang wajib diisi."
                                 !email.contains('@') -> message = "Format email belum benar."
                                 password.length < 8 -> message = "Kata sandi minimal 8 karakter."
                                 password != confirmPassword -> message = "Konfirmasi kata sandi belum sama."
@@ -163,9 +194,9 @@ internal fun RegisterScreen(onBackToLogin: () -> Unit, onRegistered: (String) ->
                                                     nama_lengkap = fullName.trim(),
                                                     email = email.trim(),
                                                     password = password,
-                                                    role = selectedRole,
+                                                    role = effectiveRole,
                                                     atasan_id = selectedSupervisor?.id,
-                                                    nip = nip.trim().ifBlank { null }
+                                                    nrp = nrp.trim().ifBlank { null }
                                                 )
                                             )
                                             if (result.isSuccessful) {

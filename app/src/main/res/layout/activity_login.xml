@@ -25,16 +25,20 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <TextView
+                <ImageView
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:background="#F7F9FC"
-                    android:gravity="center"
-                    android:text="SP"
-                    android:textColor="#0D1B35"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_logo_humas"
+                    android:contentDescription="Logo Humas" />
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_logo_polri"
+                    android:contentDescription="Logo Polri" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,6 +78,18 @@
                 style="@style/SipkaEditText"
                 android:hint="Masukkan kata sandi"
                 android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/link_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:padding="4dp"
+                android:text="Lupa kata sandi?"
+                android:textColor="#2F69B3"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/login_message"

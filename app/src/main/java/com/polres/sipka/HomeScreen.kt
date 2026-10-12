@@ -1,6 +1,7 @@
 package com.polres.sipka
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,10 +34,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.Calendar
+
 @Composable
 internal fun HomeScreen(
     user: LoginResponse,
@@ -61,8 +64,12 @@ internal fun HomeScreen(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp, vertical = 20.dp)
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("SP", color = Color(0xFF31558C), fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.width(9.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo_humas),
+                    contentDescription = "Logo Humas",
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(Modifier.width(10.dp))
                 Text("SIPKA", color = Navy, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.weight(1f))
                 Box {

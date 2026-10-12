@@ -1,5 +1,7 @@
 package com.polres.sipka
 
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,7 +25,8 @@ data class LoginResponse(
     val namaLengkap: String?,
     val email: String,
     val role: String?,
-    val nip: String? = null,
+    @com.google.gson.annotations.SerializedName(value = "nrp", alternate = ["nip"])
+    val nrp: String? = null,
     val fotoProfil: String? = null,
     val statusAnggota: String? = null,
     val kepalaDinas: String? = null
@@ -34,16 +37,25 @@ data class RegisterRequest(
     val password: String,
     val role: String,
     val atasan_id: Long?,
-    val nip: String? = null
+    @com.google.gson.annotations.SerializedName(value = "nrp", alternate = ["nip"])
+    val nrp: String? = null
 )
 data class UpdateProfileRequest(
     val namaLengkap: String? = null,
-    val nip: String? = null,
+    @com.google.gson.annotations.SerializedName(value = "nrp", alternate = ["nip"])
+    val nrp: String? = null,
     val fotoProfil: String? = null,
     val statusAnggota: String? = null,
     val kepalaDinas: String? = null
 )
-data class SupervisorOption(val id: Long, val namaLengkap: String?, val role: String?)
+data class SupervisorOption(
+    val id: Long,
+    val namaLengkap: String?,
+    val role: String?
+) {
+    val label: String
+        get() = if (!role.isNullOrBlank()) "${namaLengkap ?: "Anggota #$id"} ($role)" else (namaLengkap ?: "Anggota #$id")
+}
 data class RegistrationOptions(val roles: List<String>, val supervisors: List<SupervisorOption>)
 data class ReportSummary(
     val id: Long,
@@ -182,9 +194,18 @@ interface AuthApi {
 }
 
 object SipkaApi {
+    private val okHttpClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
+            .writeTimeout(5, TimeUnit.SECONDS)
+            .build()
+    }
+
     val service: AuthApi by lazy {
         Retrofit.Builder()
             .baseUrl(BuildConfig.API_BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApi::class.java)

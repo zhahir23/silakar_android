@@ -58,16 +58,17 @@ internal fun ForgotPasswordScreen(onBackToLogin: () -> Unit) {
                 Column(Modifier.padding(20.dp)) {
                     // HEADER
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Surface(
-                            modifier = Modifier.size(38.dp),
-                            shape = RoundedCornerShape(4.dp),
-                            border = BorderStroke(1.dp, Border),
-                            color = Color(0xFFF8F9FA)
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text("\uD83D\uDD11", fontSize = 20.sp)
-                            }
-                        }
+                        androidx.compose.foundation.Image(
+                            painter = androidx.compose.ui.res.painterResource(id = R.drawable.ic_logo_humas),
+                            contentDescription = "Logo Humas",
+                            modifier = Modifier.size(38.dp)
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        androidx.compose.foundation.Image(
+                            painter = androidx.compose.ui.res.painterResource(id = R.drawable.ic_logo_polri),
+                            contentDescription = "Logo Polri",
+                            modifier = Modifier.size(38.dp)
+                        )
                         Spacer(Modifier.width(10.dp))
                         Column {
                             Text(

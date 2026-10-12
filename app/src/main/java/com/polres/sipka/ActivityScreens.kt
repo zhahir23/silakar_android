@@ -4,6 +4,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,16 +63,11 @@ internal fun ProfileDashboardScreen(
                 Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Surface(
-                    Modifier.size(36.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(1.dp, Border),
-                    color = Color.White
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text("SP", color = Navy, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                    }
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo_humas),
+                    contentDescription = "Logo Humas",
+                    modifier = Modifier.size(42.dp)
+                )
                 Spacer(Modifier.width(10.dp))
                 Column {
                     Text("SIPKA", color = Navy, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -138,7 +135,7 @@ internal fun ProfileDashboardScreen(
 
                         Spacer(Modifier.width(16.dp))
 
-                        // Sebelah Kanan: Nama, NIP, Email, Badge Status & Kepala Dinas
+                        // Sebelah Kanan: Nama, NRP, Email, Badge Status & Kepala Dinas
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = currentUser.namaLengkap ?: "Anggota SIPKA",
@@ -148,7 +145,7 @@ internal fun ProfileDashboardScreen(
                             )
                             Spacer(Modifier.height(2.dp))
                             Text(
-                                text = "NIP: ${currentUser.nip?.ifBlank { "-" } ?: "-"}",
+                                text = "NRP: ${currentUser.nrp?.ifBlank { "-" } ?: "-"}",
                                 color = Color(0xFF475467),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium
@@ -350,7 +347,7 @@ private fun EditProfileDialog(
     onSaved: (LoginResponse) -> Unit
 ) {
     var name by remember { mutableStateOf(currentUser.namaLengkap.orEmpty()) }
-    var nip by remember { mutableStateOf(currentUser.nip.orEmpty()) }
+    var nrp by remember { mutableStateOf(currentUser.nrp.orEmpty()) }
     var statusAnggota by remember { mutableStateOf(currentUser.statusAnggota ?: "Anggota Unit") }
     var kepalaDinas by remember { mutableStateOf(currentUser.kepalaDinas.orEmpty()) }
     var photoUriString by remember { mutableStateOf(currentUser.fotoProfil.orEmpty()) }
@@ -427,10 +424,10 @@ private fun EditProfileDialog(
                 )
 
                 Spacer(Modifier.height(10.dp))
-                FieldLabel("NIP (Nomor Induk Pegawai)")
+                FieldLabel("NRP (Nomor Registrasi Pokok)")
                 OutlinedTextField(
-                    value = nip,
-                    onValueChange = { nip = it; errorMsg = null },
+                    value = nrp,
+                    onValueChange = { nrp = it; errorMsg = null },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     shape = RoundedCornerShape(6.dp)
@@ -479,7 +476,7 @@ private fun EditProfileDialog(
                                 id = currentUser.id,
                                 request = UpdateProfileRequest(
                                     namaLengkap = name.trim(),
-                                    nip = nip.trim(),
+                                    nrp = nrp.trim(),
                                     fotoProfil = photoUriString.trim().ifBlank { null },
                                     statusAnggota = statusAnggota.trim(),
                                     kepalaDinas = kepalaDinas.trim()

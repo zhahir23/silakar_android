@@ -15,8 +15,12 @@
         android:paddingBottom="24dp">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="42dp" android:gravity="center_vertical" android:orientation="horizontal">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SP" android:textColor="#31558C" android:textSize="17sp" android:textStyle="bold" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="9dp" android:text="SIPKA" android:textColor="#0D1B35" android:textSize="17sp" android:textStyle="bold" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_logo_humas"
+                android:contentDescription="Logo Humas" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10dp" android:text="SIPKA" android:textColor="#0D1B35" android:textSize="17sp" android:textStyle="bold" />
             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
             <TextView android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/sipka_input_background" android:gravity="center" android:text="!" android:textColor="#0D1B35" android:textSize="20sp" android:textStyle="bold" />
         </LinearLayout>

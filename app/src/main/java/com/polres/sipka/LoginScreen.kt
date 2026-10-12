@@ -2,6 +2,7 @@ package com.polres.sipka
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -60,19 +62,24 @@ internal fun LoginScreen(onRegister: () -> Unit, onForgotPassword: () -> Unit, n
                 shadowElevation = 2.dp
             ) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 28.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Surface(
-                            modifier = Modifier.size(38.dp),
-                            shape = RoundedCornerShape(2.dp),
-                            border = BorderStroke(1.dp, Border),
-                            color = Color.White
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text("❇", color = Navy, fontSize = 24.sp)
-                            }
-                        }
-                        Spacer(Modifier.width(9.dp))
-                        Text("SIPKA", color = Navy, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo_humas),
+                            contentDescription = "Logo Humas",
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo_polri),
+                            contentDescription = "Logo Polri",
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(Modifier.width(10.dp))
+                        Text("SIPKA", color = Navy, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
 
                     Spacer(Modifier.height(22.dp))
@@ -112,13 +119,19 @@ internal fun LoginScreen(onRegister: () -> Unit, onForgotPassword: () -> Unit, n
                         }
                     )
 
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                        TextButton(onClick = onForgotPassword) {
-                            Text("Lupa kata sandi?", color = Color(0xFF2F69B3), fontSize = 12.sp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(
+                            onClick = onForgotPassword,
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)
+                        ) {
+                            Text("Lupa kata sandi?", color = Color(0xFF2F69B3), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                         }
                     }
 
-                    Spacer(Modifier.height(22.dp))
+                    Spacer(Modifier.height(14.dp))
                     Button(
                         onClick = {
                             if (email.isBlank() || password.isBlank()) {
